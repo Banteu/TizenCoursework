@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/PresentationSwitch" version="1.0.0" viewmodes="maximized">
+    <tizen:application id="JmGc4kYkGP.PresentationSwitch" package="JmGc4kYkGP" required_version="2.4"/>
+    <content src="index.html"/>
+    <feature name="http://tizen.org/feature/screen.size.all"/>
+    <icon src="icon.png"/>
+    <name>PresentationSwitch</name>
+    <tizen:privilege name="http://tizen.org/privilege/mediacapture"/>
+    <tizen:privilege name="http://tizen.org/privilege/content.read"/>
+    <tizen:privilege name="http://tizen.org/privilege/content.write"/>
+    <tizen:profile name="mobile"/>
+    <tizen:setting screen-orientation="landscape" context-menu="disable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+</widget>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width,user-scalable=no"/>
+	<link rel="stylesheet"  href="./lib/tau/mobile/theme/default/tau.css">
+	<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+	<title>QrScanPage</title>
+	
+	<script type="text/javascript" src="./lib/LazarQr/src/grid.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/version.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/detector.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/formatinf.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/errorlevel.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/bitmat.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/datablock.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/bmparser.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/datamask.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/rsdecoder.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/gf256poly.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/gf256.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/decoder.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/qrcode.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/findpat.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/alignpat.js"></script>
+	<script type="text/javascript" src="./lib/LazarQr/src/databr.js"></script>
+	
+	<script src="lib/jquery.js"></script>
+</head>
+
+<body>
+	<div id="CameraDiv" class="ui-page">Scan your QR code please!</div>
+
+	<div id="PresentationPage" class="ui-page">
+	
+
+
+		<table>
+			<tr>
+				<td>	<canvas id="presentationCanvas"></canvas></td>
+				<td>		<button id="nextSlide">Next</button>
+	<button id="prevSlide">Back</button>
+	<button id="clear">Clear</button></canvas>
+	<button id="redButton">RedColor</button></canvas>
+	<button id="greenButton">GreenColor</button></canvas>
+	<button id="blueButton">BlueColor</button></canvas>
+	<button id="increaseSize">+</button></canvas>
+	<button id="decreaseSize">-</button></canvas>	
+	</td>
+	
+			</tr>
+		</table>
+	</div>
+
+	<script type="text/javascript" src="./lib/tau/mobile/js/tau.js"></script>
+	<script src="./js/main.js"></script>
+</body>
+<canvas id="qr-canvas" width="800" height="600"></canvas>
+</html>
