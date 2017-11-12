@@ -1,6 +1,7 @@
-
+"use strict";
 //http://remote-drawing-client.alexbelov.xyz/s/4d505f
 
+var countOnBack = 0;
 
 function WebConnection(token)
 {
@@ -11,14 +12,10 @@ function WebConnection(token)
 	
 	this.slideList = [];
 	this.presentationName = "";
-	this.presentationId = 0;
-		
-	this.downloadedSlides = [];
-	
-	this.downloadedCount = 0;
-	
+	this.presentationId = 0;		
+	this.downloadedSlides = [];	
+	this.downloadedCount = 0;	
 	this.presentationCanvas = document.getElementById("presentationCanvas");  
-	
 	this.presentationCanvas.width = 500;
 	this.presentationCanvas.height = 400;
 	this.presentationCanvas.style.width = this.presentationCanvas.width + 'px';
@@ -39,22 +36,20 @@ function WebConnection(token)
 		
 	this.onLineStart = function(event)
 	{
-		var x = event.pageX - this.presentationCanvas.offsetLeft;
-		var y = event.pageY - this.presentationCanvas.offsetTop;
+		var x = event.touches.item(0).clientX;
+		var y = event.touches.item(0).clientY;
 		this.isDrawingLine = true;
 		this.sx = x;
 		this.sy = y;
+		countOnBack = 0;
 		
 	}
 	this.lineList = [];
 	
 	
 	this.onLineEnd = function(event)
-	{
-		var x = event.pageX - this.presentationCanvas.offsetLeft;
-		var y = event.pageY - this.presentationCanvas.offsetTop;	
+	{	
 		this.isDrawingLine = false;
-		this.lineList.push({sx:this.sx, sy:this.sy, ex:x, ey:y, color:this.color});		
 		this.lineId += 1;
 	}
 	
@@ -74,16 +69,14 @@ function WebConnection(token)
 	
 
 	
-	this.drawCallback = function(event)
+	this.drawCallback = function(e)
 	{
-		//this.render();
-		//this.drawAllLines();
 		this.pContext.beginPath();
 		this.pContext.moveTo(this.sx, this.sy);
-		var x = event.pageX - this.presentationCanvas.offsetLeft;
-		var y = event.pageY - this.presentationCanvas.offsetTop;		
+		var x = e.touches.item(0).clientX;
+		var y = e.touches.item(0).clientY;	
+		console.log(x + "  " + y);
 		this.pContext.lineTo(x, y);
-		console.log('#' + (('00000000' + this.color.toString(16)).substr(-6)));
 		this.pContext.strokeStyle = '#' + (('00000000' + this.color.toString(16)).substr(-6));
 		this.pContext.lineWidth = this.radius;
 		this.pContext.stroke();		
@@ -104,16 +97,18 @@ function WebConnection(token)
 	this.presentationCanvas.addEventListener('touchmove',this.drawCallback.bind(this));
 	
 	
-	$("#increaseSize").bind('click', function(){this.radius += 1;}.bind(this));
-	$("#clear").bind('click', function(){this.render();}.bind(this));
-	$("#greenButton").bind('click', function(){this.color = 0x00ff00;}.bind(this));
-	$("#redButton").bind('click', function(){this.color = 0xff0000;}.bind(this));
-	$("#blueButton").bind('click', function(){this.color = 0x0000ff;}.bind(this));
+	$("#increaseSize").bind('click', function(){this.radius += 1;countOnBack = 0;}.bind(this));
+	$("#clear").bind('click', function(){this.render(); countOnBack = 0;}.bind(this));
+	$("#greenButton").bind('click', function(){this.color = 0x00ff00;countOnBack = 0;}.bind(this));
+	$("#redButton").bind('click', function(){this.color = 0xff0000;countOnBack = 0;}.bind(this));
+	$("#blueButton").bind('click', function(){this.color = 0x0000ff;countOnBack = 0;}.bind(this));
+	$("#scanButton").bind('click', function(){tau.changePage("CameraDiv"); qrScanner.tryScan(); countOnBack = 0;});
+	
 	
 	
 	$("#decreaseSize").bind('click', function(){
 		if (this.radius == 1) return;
-		this.radius -= 1;}.bind(this));
+		this.radius -= 1;countOnBack = 0;}.bind(this));
 	
 	
 
@@ -142,6 +137,7 @@ function WebConnection(token)
 			$.post("http://remote-drawing.alexbelov.xyz/api/presentations/"+this.presentationId+"/slide/"+(this.currentSlide + 1), {token:this.token});
 		}
 		this.render();
+		countOnBack = 0;
 	};
 	this.prevButtonEvent = function ()
 	{
@@ -151,6 +147,7 @@ function WebConnection(token)
 			$.post("http://remote-drawing.alexbelov.xyz/api/presentations/"+this.presentationId+"/slide/"+(this.currentSlide + 1), {token:this.token});
 		}
 		this.render();
+		countOnBack = 0;
 	};
 	
 	this.nextButton = document.getElementById("nextSlide");
@@ -168,6 +165,8 @@ function WebConnection(token)
 		var aspect = this.downloadedSlides[this.currentSlide].height / this.downloadedSlides[this.currentSlide].width;
 		this.aspect = aspect;
 		this.sizeRescale = this.downloadedSlides[this.currentSlide].width / this.presentationCanvas.width;
+		
+		this.pContext.fillRect(0,0, this.presentationCanvas.width, this.presentationCanvas.height);
 		this.pContext.drawImage(this.downloadedSlides[this.currentSlide], 0, 0, this.presentationCanvas.width, this.presentationCanvas.width * aspect);		
 	};
 	
@@ -221,8 +220,9 @@ function QrCodeScannerManager()
 {
 	QrCodeScannerManager.prototype.createCameraWindow = function(sourceUrl)
 	{
-		h = this.height;
-		w = this.width;
+		
+		var h = this.height;
+		var w = this.width;
         this.video = $('<video/>', {
             autoplay: 'autoplay',
             id: 'video',
@@ -292,7 +292,8 @@ function QrCodeScannerManager()
 		var CaptureOptions = 
 		{
 			audio:false,
-			video:true,			
+			video:true,
+			facingMode: "environment"
 		};
 		
 		navigator.getUserMedia = navigator.getUserMedia ||
@@ -319,8 +320,22 @@ function QrCodeScannerManager()
 	
 }());
 
-qrScanner = new QrCodeScannerManager();
+( function () {
+    window.addEventListener( 'tizenhwkey', function( ev ) {
+        if( ev.keyName === "back" ) {
+        	console.log(countOnBack);
+        	countOnBack++;
+        	if (countOnBack == 2)
+        		{
+        			tizen.application.getCurrentApplication().exit();        		
+        		}
+        }
+    } );
+} () );
+
+
+var qrScanner = new QrCodeScannerManager();
 $(document).ready(function startCameraQr(){
-	qrScanner.init()();
+	qrScanner.init();
 });
 
