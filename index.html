@@ -118,6 +118,7 @@
 			text-align: center;
 			line-height: 100%;
 			vertical-align: middle;
+			top: -10px;
 		}
 		.button-color-red {
 			background-color: red;
@@ -179,17 +180,11 @@
 		<div class="ui-controls-slides right">
 			<button class="button ui-controls__next" id="nextSlide">></button>
 		</div>
-		<table>
-			<tr>
-				<td>
-					<canvas id="presentationCanvas"></canvas>
-				</td>
-			</tr>
-		</table>
+		<canvas id="presentationCanvas" width="800" height="600" style="display: block; margin: 0 auto;"></canvas>
 	</div>
 
 	<script type="text/javascript" src="./lib/tau/mobile/js/tau.js"></script>
 	<script src="./js/main.js"></script>
-	<canvas id="qr-canvas" width="800" height="600"></canvas>
+	<canvas id="qr-canvas" width="800" height="600" style="position: absolute; top: 0; left: 0; right: 0; display: block; margin: 0 auto;"></canvas>
 </body>
 </html>
