@@ -143,24 +143,6 @@
 			background-color: white;
 			border: 2px solid #777;
 		}
-		.button-size-minus:before {
-			position: absolute;
-			content: '-';
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			text-align: center;
-			vertical-align: middle;
-		}
-		.button-size-plus:before {
-			position: absolute;
-			content: '+';
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			text-align: center;
-			vertical-align: middle;
-		}
 	</style>
 </head>
 
@@ -176,8 +158,8 @@
 			<button class="button button-color button-color-red" id="redButton"></button>
 			<button class="button button-color button-color-green" id="greenButton"></button>
 			<button class="button button-color button-color-blue" id="blueButton"></button>
-			<button class="button button-size button-size-plus" id="increaseSize"></button>
-			<button class="button button-size button-size-minus" id="decreaseSize"></button>
+			<button class="button button-size button-size-minus" id="decreaseSize">-</button>
+			<button class="button button-size button-size-plus" id="increaseSize">+</button>
 		</div>
 		<div class="ui-controls-slides left">
 			<button class="button ui-controls__prev" id="prevSlide"><</button>
