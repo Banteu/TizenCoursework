@@ -26,37 +26,180 @@
 	<script type="text/javascript" src="./lib/LazarQr/src/databr.js"></script>
 	
 	<script src="lib/jquery.js"></script>
+
+	<style>
+		body, html {
+			padding: 0;
+			margin: 0;
+			height: 100%;
+			min-height: 100%;
+		}
+		.ui-controls-slides {
+			width: 50px;
+			height: 50px;
+			position: fixed;
+		}
+		.ui-controls-slides.left {
+			left: 10px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		.ui-controls-slides.left .button {
+			position: relative;
+			height: 100%;
+			width: 100%;
+		}
+		.ui-controls-slides.left .button:before {
+			content: '<';
+			text-align: center;
+			line-height: 100%;
+			vertical-align: middle;
+		}
+
+		.ui-controls-slides.right {
+			right: 10px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		.ui-controls-slides.right .button {
+			position: relative;
+			height: 100%;
+			width: 100%;
+		}
+		.ui-controls-slides.right .button:before {
+			content: '>';
+			text-align: center;
+			line-height: 100%;
+			vertical-align: middle;
+		}
+		.button {
+			border-radius: 200px;
+			border: 1px solid #333;
+			background-color: rgba(0,0,0,.1);
+			outline: none;
+		}
+		.button:hover {
+			background-color: rgba(0,0,0,.2);
+		}
+		.button:active {
+			background-color: rgba(0,0,0,.3);
+		}
+
+		.ui-controls-clear {
+			height: 30px;
+			position: fixed;
+			top: 5px;
+			right: 5px;
+		}
+		.ui-controls-clear .button {
+			height: 100%;
+			padding: 5px 10px;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+
+		.ui-controls-colors {
+			height: 30px;
+			position: fixed;
+			bottom: 5px;
+			left: 5px;
+		}
+		.ui-controls-colors .button {
+			height: 100%;
+			padding: 5px 10px;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		.button-color, .button-size {
+			width: 30px;
+			height: 30px;
+			border: 2px solid white;
+		}
+		.button-size {
+			padding: 8px !important;
+			position: relative;
+		}
+		.button-color-red {
+			background-color: red;
+		}
+		.button-color-red:hover, .button-color-red:active {
+			background-color: red;
+			border: 2px solid #777;
+		}
+		.button-color-green {
+			background-color: green;
+		}
+		.button-color-green:hover, .button-color-green:active {
+			background-color: green;
+			border: 2px solid #777;
+		}
+		.button-color-blue {
+			background-color: blue;
+		}
+		.button-color-blue:hover, .button-color-blue:active {
+			background-color: blue;
+			border: 2px solid #777;
+		}
+
+		.button-size:hover, .button-size:active {
+			background-color: white;
+			border: 2px solid #777;
+		}
+		.button-size-minus:before {
+			position: absolute;
+			content: '-';
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			vertical-align: middle;
+		}
+		.button-size-plus:before {
+			position: absolute;
+			content: '+';
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			vertical-align: middle;
+		}
+	</style>
 </head>
 
 <body>
 	<div id="CameraDiv" class="ui-page">Scan your QR code please!</div>
 
 	<div id="PresentationPage" class="ui-page">
-	
-
-
+		<div class="ui-controls-clear">
+			<button class="button" id="scanButton">Scan</button>
+			<button class="button" id="clear">Clear</button>
+		</div>
+		<div class="ui-controls-colors">
+			<button class="button button-color button-color-red" id="redButton"></button>
+			<button class="button button-color button-color-green" id="greenButton"></button>
+			<button class="button button-color button-color-blue" id="blueButton"></button>
+			<button class="button button-size button-size-plus" id="increaseSize"></button>
+			<button class="button button-size button-size-minus" id="decreaseSize"></button>
+		</div>
+		<div class="ui-controls-slides left">
+			<button class="button ui-controls__prev" id="prevSlide"></button>
+		</div>
+		<div class="ui-controls-slides right">
+			<button class="button ui-controls__next" id="nextSlide"></button>
+		</div>
 		<table>
 			<tr>
-				<td>	<canvas id="presentationCanvas"></canvas></td>
-				<td>		<button id="nextSlide">Next</button>
-	<button id="prevSlide">Back</button>
-	<button id="clear">Clear</button></canvas>
-	<button id="redButton">RedColor</button></canvas>
-	<button id="greenButton">GreenColor</button></canvas>
-	<button id="blueButton">BlueColor</button></canvas>
-	<button id="increaseSize">+</button></canvas>
-	<button id="decreaseSize">-</button></canvas>
-	<button id="scanButton">scan</button></canvas>
-	
-		
-	</td>
-	
+				<td>
+					<canvas id="presentationCanvas"></canvas>
+				</td>
 			</tr>
 		</table>
 	</div>
 
 	<script type="text/javascript" src="./lib/tau/mobile/js/tau.js"></script>
 	<script src="./js/main.js"></script>
+	<canvas id="qr-canvas" width="800" height="600"></canvas>
 </body>
-<canvas id="qr-canvas" width="800" height="600"></canvas>
 </html>
