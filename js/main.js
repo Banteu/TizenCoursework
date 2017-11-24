@@ -15,11 +15,11 @@ function WebConnection(token)
 	this.presentationId = 0;		
 	this.downloadedSlides = [];	
 	this.downloadedCount = 0;	
-	this.presentationCanvas = document.getElementById("presentationCanvas");  
+	this.presentationCanvas = document.getElementById("presentationCanvas");  	
 	this.presentationCanvas.width = 500;
-	this.presentationCanvas.height = 400;
-	this.presentationCanvas.style.width = this.presentationCanvas.width + 'px';
-	this.presentationCanvas.style.height = this.presentationCanvas.height + 'px';	
+	this.presentationCanvas.height = this.presentationCanvas.width * 9 / 16;	
+	
+	
 	this.pContext = this.presentationCanvas.getContext("2d");   
 	
 	
@@ -36,8 +36,9 @@ function WebConnection(token)
 		
 	this.onLineStart = function(event)
 	{
-		var x = event.touches.item(0).clientX;
-		var y = event.touches.item(0).clientY;
+		var rect = this.presentationCanvas.getBoundingClientRect();
+		var x = event.touches.item(0).clientX - rect.left;
+		var y = event.touches.item(0).clientY - rect.top;
 		this.isDrawingLine = true;
 		this.sx = x;
 		this.sy = y;
@@ -73,8 +74,9 @@ function WebConnection(token)
 	{
 		this.pContext.beginPath();
 		this.pContext.moveTo(this.sx, this.sy);
-		var x = e.touches.item(0).clientX;
-		var y = e.touches.item(0).clientY;	
+		var rect = this.presentationCanvas.getBoundingClientRect();
+		var x = e.touches.item(0).clientX - rect.left;
+		var y = e.touches.item(0).clientY - rect.top;	
 		console.log(x + "  " + y);
 		this.pContext.lineTo(x, y);
 		this.pContext.strokeStyle = '#' + (('00000000' + this.color.toString(16)).substr(-6));
@@ -98,7 +100,7 @@ function WebConnection(token)
 	
 	
 	$("#increaseSize").bind('click', function(){this.radius += 1;countOnBack = 0;}.bind(this));
-	$("#clear").bind('click', function(){this.render(); countOnBack = 0;}.bind(this));
+	$("#clearButton").bind('click', function(){this.render(); countOnBack = 0;}.bind(this));
 	$("#greenButton").bind('click', function(){this.color = 0x00ff00;countOnBack = 0;}.bind(this));
 	$("#redButton").bind('click', function(){this.color = 0xff0000;countOnBack = 0;}.bind(this));
 	$("#blueButton").bind('click', function(){this.color = 0x0000ff;countOnBack = 0;}.bind(this));
@@ -223,12 +225,11 @@ function QrCodeScannerManager()
 		
 		var h = this.height;
 		var w = this.width;
-        this.video = $('<video/>', {
-            autoplay: 'autoplay',
-            id: 'video',
-            style: 'height:' + h + 'px;' + ' width:' + w + 'px;',
-            src: sourceUrl
-        }).appendTo('#CameraDiv').get(0);
+        this.video = $("#qrvideo").get(0);
+        this.video.src = sourceUrl;
+        this.video.autoplay = 'autoplay';
+        this.video.width = w;
+        this.video.height = h;
 	}
 	QrCodeScannerManager.prototype.qrCodeResult = function(resl)
 	{

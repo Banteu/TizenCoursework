@@ -26,8 +26,7 @@
 	<script type="text/javascript" src="./lib/LazarQr/src/databr.js"></script>
 	
 	<script src="lib/jquery.js"></script>
-
-	<style>
+<style>
 		body, html {
 			padding: 0;
 			margin: 0;
@@ -149,16 +148,31 @@
 			border: 2px solid #777;
 		}
 	</style>
-</head>
-
 <body>
-	<div id="CameraDiv" class="ui-page">Scan your QR code please!</div>
+	<div id="CameraDiv" class="ui-page"><table style="width: 100%; height: 100%; background-color:#8f9DB2; color: #F8DFBD;" ><tr><th>Scan QR code please</th><th><video id="qrvideo" style="border-style:solid; padding: 3px; border-width: 1px;"></video></th></tr></table></div>
 
 	<div id="PresentationPage" class="ui-page">
+	<table style="width: 100%; height: 100%; background-color:#8f9DB2; color: #F8DFBD;" >
+	<tr><th>
 		<div class="ui-controls-clear" style="white-space: nowrap; left: 5px !important; top: 5px !important;">
-			<button class="button" id="scanButton">Scan</button>
-			<button class="button" id="clear">Clear</button>
+			<button class="button" id="scanButton" style="width:auto; height: 30px; float:right;">Scan</button>
+			<button class="button" id="clearButton" style="width:auto; height: 30px; float:left;">Clear</button>
 		</div>
+		</th>
+		</tr>
+	
+	
+		<tr style="width:auto;">
+			<th>		
+				<div class="ui-controls-slides left">
+					<button class="button ui-controls__prev" id="prevSlide"><</button>
+				</div>
+			</th>			
+			<th>
+				<canvas id="presentationCanvas"></canvas>
+			</th>
+		</tr>
+		<tr style="width:auto;"><th>
 		<div class="ui-controls-colors" style="white-space: nowrap;">
 			<button class="button button-color button-color-red"
 							style="width: 30px !important; height: 30px !important; padding: 0 !important; background-color: red;"
@@ -175,10 +189,14 @@
 			<button class="button button-size button-size-plus"
 							style="width: 30px !important; height: 30px !important; padding: 0 !important;"
 							id="increaseSize">+</button>
-		</div>
-		<div class="ui-controls-slides left">
-			<button class="button ui-controls__prev" id="prevSlide"><</button>
-		</div>
+		</div></th>
+		</tr>
+	
+	
+	</table>
+		
+
+
 		<div class="ui-controls-slides right">
 			<button class="button ui-controls__next" id="nextSlide">></button>
 		</div>
