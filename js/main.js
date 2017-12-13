@@ -100,7 +100,7 @@ function WebConnection(token)
 	
 	
 	$("#increaseSize").bind('click', function(){this.radius += 1;countOnBack = 0;}.bind(this));
-	$("#clearButton").bind('click', function(){this.render(); countOnBack = 0;}.bind(this));
+	$("#clearButton").bind('click', function(){this.render(); countOnBack = 0; $.post("http://remote-drawing.alexbelov.xyz/api/presentations/"+this.presentationId+"/clear",  {token:this.token} );}.bind(this));
 	$("#greenButton").bind('click', function(){this.color = 0x00ff00;countOnBack = 0;}.bind(this));
 	$("#redButton").bind('click', function(){this.color = 0xff0000;countOnBack = 0;}.bind(this));
 	$("#blueButton").bind('click', function(){this.color = 0x0000ff;countOnBack = 0;}.bind(this));
