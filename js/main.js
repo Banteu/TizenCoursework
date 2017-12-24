@@ -43,7 +43,13 @@ function WebConnection(token)
 		this.sx = x;
 		this.sy = y;
 		countOnBack = 0;
+		var xcrd = (x - this.xoffset) * this.sizeRescale / this.downloadedSlides[this.currentSlide].width;
+		var ycrd = (y - this.yoffset) * this.sizeRescale / this.downloadedSlides[this.currentSlide].height;
 		
+		$.post("http://remote-drawing.alexbelov.xyz/api/presentations/"+this.presentationId+"/draw", {token:this.token, lineWidth:this.radius * this.sizeRescale, alpha:1, x:xcrd, y:ycrd, color:this.color, lineCode:this.lineId});
+
+		var dtg = new Date();
+		this.lastSend = dtg.getTime();
 	}
 	this.lineList = [];
 	
@@ -72,6 +78,7 @@ function WebConnection(token)
 	
 	this.drawCallback = function(e)
 	{
+		
 		this.pContext.beginPath();
 		this.pContext.moveTo(this.sx, this.sy);
 		var rect = this.presentationCanvas.getBoundingClientRect();
@@ -85,11 +92,20 @@ function WebConnection(token)
 		this.sx = x;
 		this.sy = y;
 		
-		var w = this.presentationCanvas.width;
-		var h = this.presentationCanvas.width * this.aspect;
+		var xcrd = (x - this.xoffset) * this.sizeRescale / this.downloadedSlides[this.currentSlide].width;
+		var ycrd = (y - this.yoffset) * this.sizeRescale / this.downloadedSlides[this.currentSlide].height;
 		
-		$.post("http://remote-drawing.alexbelov.xyz/api/presentations/"+this.presentationId+"/draw", {token:this.token, lineWidth:this.radius * this.sizeRescale, alpha:1, x:x / w, y:y / h, color:this.color, lineCode:this.lineId});
-	}
+		var dtg = new Date();
+				
+		var ctime = dtg.getTime();
+		
+		
+		if (ctime - this.lastSend > 100)
+			{
+				$.post("http://remote-drawing.alexbelov.xyz/api/presentations/"+this.presentationId+"/draw", {token:this.token, lineWidth:this.radius * this.sizeRescale, alpha:1, x:xcrd, y:ycrd, color:this.color, lineCode:this.lineId});
+				this.lastSend = dtg.getTime();
+			}
+		}
 	
 	
 	
@@ -166,10 +182,22 @@ function WebConnection(token)
 		
 		var aspect = this.downloadedSlides[this.currentSlide].height / this.downloadedSlides[this.currentSlide].width;
 		this.aspect = aspect;
-		this.sizeRescale = this.downloadedSlides[this.currentSlide].width / this.presentationCanvas.width;
+		
+		var slideWidth = this.downloadedSlides[this.currentSlide].width;
+		var slideHeight = this.downloadedSlides[this.currentSlide].height;
+		
+		
+		
+		this.sizeRescale = Math.max(slideWidth / this.presentationCanvas.width, slideHeight / this.presentationCanvas.height);
+		
+
+		this.xoffset = (this.presentationCanvas.width - slideWidth / this.sizeRescale) * 0.5;
+		this.yoffset = (this.presentationCanvas.height - slideHeight / this.sizeRescale) * 0.5;
+		
+		
 		
 		this.pContext.fillRect(0,0, this.presentationCanvas.width, this.presentationCanvas.height);
-		this.pContext.drawImage(this.downloadedSlides[this.currentSlide], 0, 0, this.presentationCanvas.width, this.presentationCanvas.width * aspect);		
+		this.pContext.drawImage(this.downloadedSlides[this.currentSlide], this.xoffset, this.yoffset, slideWidth / this.sizeRescale, slideHeight / this.sizeRescale);		
 	};
 	
 	this.downloadImages = function()
